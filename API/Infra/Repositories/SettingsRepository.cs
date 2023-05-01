@@ -1,6 +1,5 @@
 ﻿using API.Domain.Repositories;
 using Dapper;
-using MySqlConnector;
 using System.Data;
 
 namespace API.Infra.Repositories
@@ -9,10 +8,9 @@ namespace API.Infra.Repositories
     {
         private readonly IDbConnection connection;
 
-        public SettingsRepository()
+        public SettingsRepository(IDbConnection connection)
         {
-            string connectionString = "SERVER=localhost;PORT=3306;DATABASE=lanchonete;UID=root;PWD=root;";
-            connection = new MySqlConnection(connectionString);
+            this.connection = connection;
         }
 
         public float GetTax(int settingsId)

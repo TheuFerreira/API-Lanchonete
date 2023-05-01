@@ -1,7 +1,6 @@
 ﻿using API.Domain.Entities;
 using API.Domain.Repositories;
 using Dapper;
-using MySqlConnector;
 using System.Data;
 
 namespace API.Infra.Repositories
@@ -10,10 +9,9 @@ namespace API.Infra.Repositories
     {
         private readonly IDbConnection connection;
 
-        public ProductRepository(ConfigurationManager configurationManager) 
+        public ProductRepository(IDbConnection connection)
         {
-            string connectionString = configurationManager.GetConnectionString("MySQL")!;
-            connection = new MySqlConnection(connectionString);
+            this.connection = connection;
         }
 
         public IEnumerable<Product> GetAll()
