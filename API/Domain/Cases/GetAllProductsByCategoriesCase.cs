@@ -7,20 +7,25 @@ using API.Presenters.Responses;
 
 namespace API.Domain.Cases
 {
-    public class GetAllProductsCase : IGetAllProductsCase
+    public class GetAllProductsByCategoriesCase : IGetAllProductsByCategoriesCase
     {
         private readonly IProductRepository productRepository;
         private readonly IFileService fileService;
 
-        public GetAllProductsCase(IProductRepository productRepository, IFileService fileService)
+        public GetAllProductsByCategoriesCase(IProductRepository productRepository, IFileService fileService)
         {
             this.productRepository = productRepository;
             this.fileService = fileService;
         }
 
-        public IEnumerable<GetAllProductsResponse> Execute()
+        public IEnumerable<GetAllProductsResponse> Execute(IEnumerable<int>? categories = null)
         {
-            IEnumerable<Product> products = productRepository.GetAll();
+            IEnumerable<Product> products;
+            if (categories == null)
+                products = productRepository.GetAll();
+            else
+                products = productRepository.GetAllByCategories(categories);
+
             if (!products.Any())
                 throw new BaseEmptyException();
 

@@ -10,25 +10,25 @@ namespace API.Presenters.Controllers
     [Produces("application/json")]
     public class ProductController : ControllerBase
     {
-        private readonly IGetAllProductsCase getAllProductsCase;
         private readonly IGetProductInfoCase getProductInfoCase;
+        private readonly IGetAllProductsByCategoriesCase getAllProductsByCategoriesCase;
 
-        public ProductController(IGetAllProductsCase getAllProductsCase, IGetProductInfoCase getProductInfoCase)
+        public ProductController(IGetProductInfoCase getProductInfoCase, IGetAllProductsByCategoriesCase getAllProductsByCategoriesCase)
         {
-            this.getAllProductsCase = getAllProductsCase;
             this.getProductInfoCase = getProductInfoCase;
+            this.getAllProductsByCategoriesCase = getAllProductsByCategoriesCase;
         }
 
         [HttpGet]
         [Route("All")]
-        [ProducesResponseType(typeof(GetProductInfoResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(typeof(GetAllProductsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAll()
         {
             try
             {
-                IEnumerable<GetAllProductsResponse> result = getAllProductsCase.Execute();
+                IEnumerable<GetAllProductsResponse> result = getAllProductsByCategoriesCase.Execute();
                 return Ok(result);
             }
             catch (BaseEmptyException)
@@ -52,6 +52,28 @@ namespace API.Presenters.Controllers
             catch (BaseNotFoundException)
             {
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("AllByCategories")]
+        [ProducesResponseType(typeof(GetAllProductsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetAllByCategories(IEnumerable<int> categories)
+        {
+            try
+            {
+                IEnumerable<GetAllProductsResponse> response = getAllProductsByCategoriesCase.Execute(categories);
+                return Ok(response);
+            }
+            catch (BaseEmptyException)
+            {
+                return NoContent();
             }
             catch (Exception ex)
             {
