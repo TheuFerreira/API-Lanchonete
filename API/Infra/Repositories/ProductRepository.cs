@@ -64,7 +64,7 @@ namespace API.Infra.Repositories
         public float GetRatingOfProduct(int productId)
         {
             string sql = @"
-                SELECT AVG(rating)
+                SELECT IF(AVG(rating) IS NULL, 0, AVG(rating))
                 FROM product_rating
                 WHERE id_product = @productId;
             ";
