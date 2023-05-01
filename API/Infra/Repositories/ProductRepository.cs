@@ -28,21 +28,16 @@ namespace API.Infra.Repositories
 
         public IEnumerable<Product> GetAllByCategories(IEnumerable<int> categories)
         {
-            string sql = @"
+            string labels = string.Join(",", categories);
+            string sql = @$"
                 SELECT p.id_product AS ProductId, p.photo, p.title, p.price
                 FROM product AS p
                 INNER JOIN product_label AS pl ON pl.id_product = p.id_product
                 WHERE disabled = 0
-	                AND pl.id_label IN (@labels);
+	                AND pl.id_label IN ({labels});
             ";
 
-            string labels = string.Join(",", categories);
-            object data = new 
-            {
-                labels
-            };
-
-            IEnumerable<Product> products = connection.Query<Product>(sql, data);
+            IEnumerable<Product> products = connection.Query<Product>(sql);
             return products;
         }
 
