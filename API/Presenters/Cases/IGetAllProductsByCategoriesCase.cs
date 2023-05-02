@@ -4,6 +4,6 @@ namespace API.Presenters.Cases
 {
     public interface IGetAllProductsByCategoriesCase
     {
-        IEnumerable<GetAllProductsResponse> Execute(IEnumerable<int>? categories = null);
+        IEnumerable<GetAllProductsResponse> Execute(IEnumerable<int>? categories = null, string? search = null);
     }
 }

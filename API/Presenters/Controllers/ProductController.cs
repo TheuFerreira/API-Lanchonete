@@ -1,5 +1,6 @@
 using API.Domain.Errors;
 using API.Presenters.Cases;
+using API.Presenters.Requests;
 using API.Presenters.Responses;
 using Microsoft.AspNetCore.Mvc;
 
@@ -19,16 +20,16 @@ namespace API.Presenters.Controllers
             this.getAllProductsByCategoriesCase = getAllProductsByCategoriesCase;
         }
 
-        [HttpGet]
+        [HttpPost]
         [Route("All")]
         [ProducesResponseType(typeof(GetAllProductsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GetAll()
+        public IActionResult GetAll(GetAllRequest request)
         {
             try
             {
-                IEnumerable<GetAllProductsResponse> result = getAllProductsByCategoriesCase.Execute();
+                IEnumerable<GetAllProductsResponse> result = getAllProductsByCategoriesCase.Execute(search: request.Search);
                 return Ok(result);
             }
             catch (BaseEmptyException)
@@ -64,11 +65,11 @@ namespace API.Presenters.Controllers
         [ProducesResponseType(typeof(GetAllProductsResponse), StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-        public IActionResult GetAllByCategories(IEnumerable<int> categories)
+        public IActionResult GetAllByCategories(GetAllByCategoriesRequest request)
         {
             try
             {
-                IEnumerable<GetAllProductsResponse> response = getAllProductsByCategoriesCase.Execute(categories);
+                IEnumerable<GetAllProductsResponse> response = getAllProductsByCategoriesCase.Execute(request.Categories, search: request.Search);
                 return Ok(response);
             }
             catch (BaseEmptyException)

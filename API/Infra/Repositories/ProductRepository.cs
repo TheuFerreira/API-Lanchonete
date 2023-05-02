@@ -14,19 +14,20 @@ namespace API.Infra.Repositories
             this.connection = connection;
         }
 
-        public IEnumerable<Product> GetAll()
+        public IEnumerable<Product> GetAll(string? search)
         {
-            string sql = @"
+            string sql = @$"
                 SELECT id_product AS ProductId, photo, title, price
                 FROM product
-                WHERE disabled = 0;
+                WHERE disabled = 0
+                    AND title LIKE '%{search}%';
             ";
 
             IEnumerable<Product> products = connection.Query<Product>(sql);
             return products;
         }
 
-        public IEnumerable<Product> GetAllByCategories(IEnumerable<int> categories)
+        public IEnumerable<Product> GetAllByCategories(IEnumerable<int> categories, string? search)
         {
             string labels = string.Join(",", categories);
             string sql = @$"
@@ -34,7 +35,8 @@ namespace API.Infra.Repositories
                 FROM product AS p
                 INNER JOIN product_label AS pl ON pl.id_product = p.id_product
                 WHERE disabled = 0
-	                AND pl.id_label IN ({labels});
+	                AND pl.id_label IN ({labels})
+                    AND p.title LIKE '%{search}%';
             ";
 
             IEnumerable<Product> products = connection.Query<Product>(sql);
