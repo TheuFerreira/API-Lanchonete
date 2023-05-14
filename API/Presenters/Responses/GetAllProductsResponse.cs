@@ -1,5 +1,4 @@
-﻿using API.Domain.Entities;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 
 namespace API.Presenters.Responses
 {

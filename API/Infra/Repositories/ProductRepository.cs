@@ -14,7 +14,7 @@ namespace API.Infra.Repositories
             this.connection = connection;
         }
 
-        public IEnumerable<Product> GetAll(string? search)
+        public IEnumerable<Product> GetAll(string search)
         {
             string sql = @$"
                 SELECT id_product AS ProductId, photo, title, price
@@ -27,7 +27,7 @@ namespace API.Infra.Repositories
             return products;
         }
 
-        public IEnumerable<Product> GetAllByCategories(IEnumerable<int> categories, string? search)
+        public IEnumerable<Product> GetAllByCategories(IEnumerable<int> categories, string search)
         {
             string labels = string.Join(",", categories);
             string sql = @$"

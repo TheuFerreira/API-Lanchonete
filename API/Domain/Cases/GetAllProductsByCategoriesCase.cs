@@ -18,13 +18,13 @@ namespace API.Domain.Cases
             this.fileService = fileService;
         }
 
-        public IEnumerable<GetAllProductsResponse> Execute(IEnumerable<int>? categories = null, string? search = null)
+        public IEnumerable<GetAllProductsResponse> Execute(IEnumerable<int> categories, string search)
         {
             IEnumerable<Product> products;
-            if (categories == null)
-                products = productRepository.GetAll(search);
-            else
+            if (categories.Any())
                 products = productRepository.GetAllByCategories(categories, search);
+            else
+                products = productRepository.GetAll(search);
 
             if (!products.Any())
                 throw new BaseEmptyException();
