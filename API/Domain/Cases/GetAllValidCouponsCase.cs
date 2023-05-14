@@ -1,5 +1,4 @@
 ﻿using API.Domain.Entities;
-using API.Domain.Errors;
 using API.Domain.Repositories;
 using API.Domain.Services;
 using API.Presenters.Cases;
@@ -21,9 +20,6 @@ namespace API.Domain.Cases
         public IEnumerable<GetAllValidCouponsResponse> Execute()
         {
             IEnumerable<Coupon> coupons = couponRepository.GetAllNotExpired();
-            if (!coupons.Any())
-                throw new BaseEmptyException();
-
             IEnumerable<GetAllValidCouponsResponse> response = coupons.Select(x =>
             {
                 string path = string.Format("{0}//Photos//Coupons//{1}", Directory.GetCurrentDirectory(), x.Photo);
