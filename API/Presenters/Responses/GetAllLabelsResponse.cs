@@ -7,13 +7,13 @@ namespace API.Presenters.Responses
         [JsonPropertyName("label_id")]
         public int LabelId { get; set; }
         public string Description { get; set; }
-        public string Image { get; set; }
+        public string Photo { get; set; }
 
         public GetAllLabelsResponse() 
         {
             LabelId = 0;
             Description = string.Empty;
-            Image = string.Empty;
+            Photo = string.Empty;
         }
     }
 }

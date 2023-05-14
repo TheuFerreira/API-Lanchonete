@@ -1,5 +1,4 @@
 ﻿using API.Domain.Entities;
-using API.Domain.Errors;
 using API.Domain.Repositories;
 using API.Domain.Services;
 using API.Presenters.Cases;
@@ -21,9 +20,6 @@ namespace API.Domain.Cases
         public IEnumerable<GetAllLabelsResponse> Execute()
         {
             IEnumerable<Label> labels = labelRepository.GetAll();
-            if (!labels.Any())
-                throw new BaseEmptyException();
-
             IEnumerable<GetAllLabelsResponse> responses = labels.Select(x =>
             {
                 string path = string.Format("{0}//Photos//Labels//{1}", Directory.GetCurrentDirectory(), x.Photo);
@@ -33,7 +29,7 @@ namespace API.Domain.Cases
                 {
                     LabelId = x.LabelId,
                     Description = x.Description,
-                    Image = image,
+                    Photo = image,
                 };
             });
 
