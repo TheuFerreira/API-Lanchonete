@@ -45,7 +45,6 @@ namespace API.Presenters.Controllers
         [HttpPost]
         [Route("AllByCategories")]
         [ProducesResponseType(typeof(GetAllProductsResponse), StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllByCategories(GetAllByCategoriesRequest request)
         {
@@ -53,10 +52,6 @@ namespace API.Presenters.Controllers
             {
                 IEnumerable<GetAllProductsResponse> response = getAllProductsByCategoriesCase.Execute(request.Categories, search: request.Search);
                 return Ok(response);
-            }
-            catch (BaseEmptyException)
-            {
-                return NoContent();
             }
             catch (Exception ex)
             {

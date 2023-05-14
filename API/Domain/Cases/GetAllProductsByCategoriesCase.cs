@@ -1,5 +1,4 @@
 ﻿using API.Domain.Entities;
-using API.Domain.Errors;
 using API.Domain.Repositories;
 using API.Domain.Services;
 using API.Presenters.Cases;
@@ -25,9 +24,6 @@ namespace API.Domain.Cases
                 products = productRepository.GetAllByCategories(categories, search);
             else
                 products = productRepository.GetAll(search);
-
-            if (!products.Any())
-                throw new BaseEmptyException();
 
             IEnumerable<GetAllProductsResponse> response = products.Select(x =>
             {
