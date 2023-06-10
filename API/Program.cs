@@ -13,15 +13,20 @@ IDbConnection connection = new MySqlConnection(connectionString);
 
 // Add services to the container.
 builder.Services.AddSingleton<IDbConnection>(connection);
+
 builder.Services.AddTransient<IFileService, FileService>();
+
 builder.Services.AddTransient<IProductRepository, ProductRepository>();
 builder.Services.AddTransient<ILabelRepository, LabelRepository>();
 builder.Services.AddTransient<ISettingsRepository, SettingsRepository>();
 builder.Services.AddTransient<ICouponRepository, CouponRepository>();
+builder.Services.AddTransient<ISaleProductRepository, SaleProductRepository>();
+
 builder.Services.AddTransient<IGetProductInfoCase, GetProductInfoCase>();
 builder.Services.AddTransient<IGetAllLabelsCase, GetAllLabelsCase>();
 builder.Services.AddTransient<IGetAllValidCouponsCase, GetAllValidCouponsCase>();
 builder.Services.AddTransient<IGetAllProductsByCategoriesCase, GetAllProductsByCategoriesCase>();
+builder.Services.AddTransient<IGetAllProductsBestSellersByCategoriesCase, GetAllProductsBestSellersByCategoriesCase>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
