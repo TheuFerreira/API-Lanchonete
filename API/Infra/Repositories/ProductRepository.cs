@@ -46,7 +46,7 @@ namespace API.Infra.Repositories
         public Product? GetById(int productId)
         {
             string sql = @"
-                SELECT id_product AS ProductId, title, description, price, calories, preparation_time AS PreparationTime
+                SELECT id_product AS ProductId, photo, title, description, price, calories, preparation_time AS PreparationTime
                 FROM product
                 WHERE disabled = 0 
                     AND id_product = @productId;
