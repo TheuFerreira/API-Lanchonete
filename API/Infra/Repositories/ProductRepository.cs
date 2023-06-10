@@ -111,5 +111,24 @@ namespace API.Infra.Repositories
             int totalRating = connection.QueryFirst<int>(sql, data);
             return totalRating;
         }
+
+        public bool HasFavorite(int productId, int userId)
+        {
+            string sql = @"
+                SELECT COUNT(id_product)
+                FROM product_favorite
+                WHERE id_product = @productId 
+                    AND id_user = @userId
+            ";
+
+            object data = new
+            {
+                productId,
+                userId
+            };
+
+            int result = connection.ExecuteScalar<int>(sql, data);
+            return result == 1;
+        }
     }
 }

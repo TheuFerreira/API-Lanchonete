@@ -22,7 +22,7 @@ namespace API.Domain.Cases
             this.settingsRepository = settingsRepository;
         }
 
-        public GetProductInfoResponse Execute(int productId)
+        public GetProductInfoResponse Execute(int productId, int? userId)
         {
             Product? product = productRepository.GetById(productId) ?? throw new BaseNotFoundException();
 
@@ -35,6 +35,9 @@ namespace API.Domain.Cases
             IList<string> carousellImages = GetCarousellImages(productId, photos);
             labels = GetLabelsImages(labels);
 
+            bool favorite = false;
+            if (userId.HasValue) 
+                favorite = productRepository.HasFavorite(productId, userId.Value);
 
             return new GetProductInfoResponse
             {
@@ -49,6 +52,7 @@ namespace API.Domain.Cases
                 PreparationTime = product.PreparationTime,
                 Labels = labels,
                 Images = carousellImages,
+                Favorite = favorite,
             };
         }
 

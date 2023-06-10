@@ -10,5 +10,6 @@ namespace API.Domain.Repositories
         int GetTotalRatingsOfProduct(int productId);
         Product? GetById(int productId);
         IEnumerable<string> GetPhotosByProduct(int productId);
+        bool HasFavorite(int productId, int userId);
     }
 }

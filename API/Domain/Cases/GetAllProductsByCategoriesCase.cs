@@ -17,7 +17,7 @@ namespace API.Domain.Cases
             this.fileService = fileService;
         }
 
-        public IEnumerable<GetAllProductsResponse> Execute(IEnumerable<int> categories, string search)
+        public IEnumerable<GetAllProductsResponse> Execute(IEnumerable<int> categories, string search, int? userId)
         {
             IEnumerable<Product> products;
             if (categories.Any())
@@ -27,6 +27,10 @@ namespace API.Domain.Cases
 
             IEnumerable<GetAllProductsResponse> response = products.Select(x =>
             {
+                bool favorite = false;
+                if (userId.HasValue)
+                    favorite = productRepository.HasFavorite(x.ProductId, userId.Value);
+
                 float rating = productRepository.GetRatingOfProduct(x.ProductId);
 
                 string photoPath = string.Format("{0}//Photos//Products//Covers//{1}", Directory.GetCurrentDirectory(), x.Photo);
@@ -39,6 +43,7 @@ namespace API.Domain.Cases
                     Rating = rating,
                     Price = x.Price,
                     Image = photoBase64,
+                    Favorite = favorite,
                 };
             });
 

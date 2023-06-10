@@ -4,6 +4,6 @@ namespace API.Presenters.Cases
 {
     public interface IGetProductInfoCase
     {
-        GetProductInfoResponse Execute(int productId);
+        GetProductInfoResponse Execute(int productId, int? userId);
     }
 }

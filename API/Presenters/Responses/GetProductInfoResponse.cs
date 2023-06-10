@@ -21,6 +21,7 @@ namespace API.Presenters.Responses
         public string PreparationTime { get; set; }
         public IEnumerable<Label> Labels { get; set; }
         public IEnumerable<string> Images { get; set; }
+        public bool Favorite { get; set; }
 
         public GetProductInfoResponse()
         {
@@ -34,6 +35,7 @@ namespace API.Presenters.Responses
             PreparationTime = string.Empty;
             Labels = new List<Label>();
             Images = new List<string>();
+            Favorite = false;
         }
     }
 }

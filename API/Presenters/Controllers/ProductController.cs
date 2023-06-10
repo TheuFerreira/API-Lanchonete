@@ -29,9 +29,11 @@ namespace API.Presenters.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetBydId(int id)
         {
+            int userId = 1; // TODO: Remove for Token
+
             try
             {
-                GetProductInfoResponse response = getProductInfoCase.Execute(id);
+                GetProductInfoResponse response = getProductInfoCase.Execute(id, userId);
                 return Ok(response);
             }
             catch (BaseNotFoundException)
@@ -50,9 +52,11 @@ namespace API.Presenters.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllByCategories(GetAllByCategoriesRequest request)
         {
+            int userId = 1; // TODO: Remove for Token
+
             try
             {
-                IEnumerable<GetAllProductsResponse> response = getAllProductsByCategoriesCase.Execute(request.Categories, search: request.Search);
+                IEnumerable<GetAllProductsResponse> response = getAllProductsByCategoriesCase.Execute(request.Categories, search: request.Search, userId);
                 return Ok(response);
             }
             catch (Exception ex)
@@ -67,9 +71,11 @@ namespace API.Presenters.Controllers
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllMostPopularByCategories(GetAllBestSellersByCategoriesRequest request)
         {
+            int userId = 1; // TODO: Remove for Token
+
             try
             {
-                IEnumerable<GetAllProductsBestSellersResponse> response = getAllProductsBestSellersByCategoriesCase.Execute(request.Categories, request.Search, request.Limit);
+                IEnumerable<GetAllProductsBestSellersResponse> response = getAllProductsBestSellersByCategoriesCase.Execute(request.Categories, request.Search, request.Limit, userId);
                 return Ok(response);
             }
             catch (Exception ex)

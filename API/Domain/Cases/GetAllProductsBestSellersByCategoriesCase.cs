@@ -20,7 +20,7 @@ namespace API.Domain.Cases
             this.fileService = fileService;
         }
 
-        public IEnumerable<GetAllProductsBestSellersResponse> Execute(IEnumerable<int> categories, string search, int limit)
+        public IEnumerable<GetAllProductsBestSellersResponse> Execute(IEnumerable<int> categories, string search, int limit, int? userId)
         {
             IEnumerable<SaleProduct> saleProducts;
 
@@ -42,6 +42,10 @@ namespace API.Domain.Cases
                 Product product = productRepository.GetById(x.ProductId) ?? throw new BaseNotFoundException();
                 float rating = productRepository.GetRatingOfProduct(x.ProductId);
 
+                bool favorite = false;
+                if (userId.HasValue)
+                    favorite = productRepository.HasFavorite(x.ProductId, userId.Value);
+
                 string photoPath = string.Format("{0}//Photos//Products//Covers//{1}", Directory.GetCurrentDirectory(), product.Photo);
                 string photoBase64 = fileService.FileToBase64(photoPath);
 
@@ -52,6 +56,7 @@ namespace API.Domain.Cases
                     Rating = rating,
                     Price = x.Price,
                     Image = photoBase64,
+                    Favorite = favorite,
                 };
             });
 

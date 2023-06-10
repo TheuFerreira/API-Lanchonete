@@ -10,6 +10,7 @@ namespace API.Presenters.Responses
         public float Rating { get; set; }
         public decimal Price { get; set; }
         public string Image { get; set; }
+        public bool Favorite { get; set; }
 
         public GetAllProductsResponse()
         {
@@ -18,6 +19,7 @@ namespace API.Presenters.Responses
             Price = 0;
             Rating = 0;
             Image = string.Empty;
+            Favorite = false;
         }
     }
 }
