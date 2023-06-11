@@ -14,12 +14,19 @@ namespace API.Presenters.Controllers
         private readonly IGetProductInfoCase getProductInfoCase;
         private readonly IGetAllProductsByCategoriesCase getAllProductsByCategoriesCase;
         private readonly IGetAllProductsBestSellersByCategoriesCase getAllProductsBestSellersByCategoriesCase;
+        private readonly IFavoriteProductCase favoriteProductCase;
 
-        public ProductController(IGetProductInfoCase getProductInfoCase, IGetAllProductsByCategoriesCase getAllProductsByCategoriesCase, IGetAllProductsBestSellersByCategoriesCase getAllProductsBestSellersByCategoriesCase)
+        public ProductController(
+            IGetProductInfoCase getProductInfoCase,
+            IGetAllProductsByCategoriesCase getAllProductsByCategoriesCase,
+            IGetAllProductsBestSellersByCategoriesCase getAllProductsBestSellersByCategoriesCase,
+            IFavoriteProductCase favoriteProductCase
+        )
         {
             this.getProductInfoCase = getProductInfoCase;
             this.getAllProductsByCategoriesCase = getAllProductsByCategoriesCase;
             this.getAllProductsBestSellersByCategoriesCase = getAllProductsBestSellersByCategoriesCase;
+            this.favoriteProductCase = favoriteProductCase;
         }
 
         [HttpGet]
@@ -49,6 +56,7 @@ namespace API.Presenters.Controllers
         [HttpPost]
         [Route("AllByCategories")]
         [ProducesResponseType(typeof(GetAllProductsResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllByCategories(GetAllByCategoriesRequest request)
         {
@@ -68,6 +76,7 @@ namespace API.Presenters.Controllers
         [HttpPost]
         [Route("AllBestSellersByCategories")]
         [ProducesResponseType(typeof(GetAllProductsBestSellersResponse), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public IActionResult GetAllMostPopularByCategories(GetAllBestSellersByCategoriesRequest request)
         {
@@ -83,18 +92,26 @@ namespace API.Presenters.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
             }
         }
-    }
 
-    public class GetAllBestSellersByCategoriesRequest
-    {
-        public string Search { get; set; }
-        public IEnumerable<int> Categories { get; set; }
-        public int Limit { get; set; }
-
-        public GetAllBestSellersByCategoriesRequest()
+        [HttpPut]
+        [Route("Favorite")]
+        [ProducesResponseType(typeof(bool), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult UpdateFavorite(UpdateFavoriteRequest request)
         {
-            Search = string.Empty;
-            Categories = new List<int>();
+            int userId = 1; // TODO: Remove for Token
+
+            try
+            {
+                bool newValue = favoriteProductCase.Execute(userId, request.ProductId);
+                return Ok(newValue);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
         }
     }
 }
