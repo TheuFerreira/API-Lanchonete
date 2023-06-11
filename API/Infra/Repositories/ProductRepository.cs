@@ -14,6 +14,19 @@ namespace API.Infra.Repositories
             this.connection = connection;
         }
 
+        public bool Favorite(int productId, int userId)
+        {
+            string sql = "INSERT INTO product_favorite (id_product, id_user) VALUES (@productId, @userId);";
+            object data = new 
+            {
+                productId,
+                userId,
+            };
+
+            int count = connection.Execute(sql, data);
+            return count == 1;
+        }
+
         public IEnumerable<Product> GetAll(string search)
         {
             string sql = @$"
@@ -129,6 +142,19 @@ namespace API.Infra.Repositories
 
             int result = connection.ExecuteScalar<int>(sql, data);
             return result == 1;
+        }
+
+        public bool Unfavorite(int productId, int userId)
+        {
+            string sql = "DELETE FROM product_favorite WHERE id_product = @productId AND id_user = @userId;";
+            object data = new
+            {
+                productId,
+                userId,
+            };
+
+            int count = connection.Execute(sql, data);
+            return count == 1;
         }
     }
 }
