@@ -22,6 +22,7 @@ builder.Services.AddTransient<ISettingsRepository, SettingsRepository>();
 builder.Services.AddTransient<ICouponRepository, CouponRepository>();
 builder.Services.AddTransient<ISaleProductRepository, SaleProductRepository>();
 builder.Services.AddTransient<IFavoriteRepository, FavoriteRepository>();
+builder.Services.AddTransient<ICartProductRepository, CartProductRepository>();
 
 builder.Services.AddTransient<IGetProductInfoCase, GetProductInfoCase>();
 builder.Services.AddTransient<IGetAllLabelsCase, GetAllLabelsCase>();
@@ -31,6 +32,7 @@ builder.Services.AddTransient<IGetAllProductsBestSellersByCategoriesCase, GetAll
 builder.Services.AddTransient<IFavoriteProductCase, FavoriteProductCase>();
 builder.Services.AddTransient<ISearchFavoritesCase, SearchFavoritesCase>();
 builder.Services.AddTransient<ICountFavoritesCase, CountFavoritesCase>();
+builder.Services.AddTransient<IAddProductToCartCase, AddProductToCartCase>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
