@@ -14,6 +14,15 @@ namespace API.Infra.Repositories
             this.connection = connection;
         }
 
+        public int Count(int userId)
+        {
+            string sql = "SELECT COUNT(id_product) FROM cart_product WHERE id_user = @userId;";
+            object data = new { userId };
+
+            int count = connection.ExecuteScalar<int>(sql, data);
+            return count;
+        }
+
         public CartProduct? Get(int userId, int productId)
         {
             string sql = "SELECT quantity FROM cart_product WHERE id_user = @userId AND id_product = @productId";

@@ -9,13 +9,15 @@ namespace API.Presenters.Controllers
     [Route("[controller]")]
     [Produces("application/json")]
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
-    public class CartController : ControllerBase
+    public class CartProductController : ControllerBase
     {
         private readonly IAddProductToCartCase addProductToCartCase;
+        private readonly ICountCartProductsCase countCartProductsCase;
 
-        public CartController(IAddProductToCartCase addProductToCartCase)
+        public CartProductController(IAddProductToCartCase addProductToCartCase, ICountCartProductsCase countCartProductsCase)
         {
             this.addProductToCartCase = addProductToCartCase;
+            this.countCartProductsCase = countCartProductsCase;
         }
 
         [HttpPost]
@@ -41,6 +43,24 @@ namespace API.Presenters.Controllers
             catch (BaseNotFoundException)
             {
                 return NotFound();
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("Count")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        public IActionResult Count()
+        {
+            int userId = 1; // TODO: Remove for token
+
+            try
+            {
+                int count = countCartProductsCase.Execute(userId);
+                return Ok(count);
             }
             catch (Exception ex)
             {
