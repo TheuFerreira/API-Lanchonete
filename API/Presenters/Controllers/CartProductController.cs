@@ -13,11 +13,13 @@ namespace API.Presenters.Controllers
     {
         private readonly ISaveProductToCartCase saveProductToCartCase;
         private readonly ICountCartProductsCase countCartProductsCase;
+        private readonly IDeleteProductFromCartCase deleteProductFromCartCase;
 
-        public CartProductController(ISaveProductToCartCase saveProductToCartCase, ICountCartProductsCase countCartProductsCase)
+        public CartProductController(ISaveProductToCartCase saveProductToCartCase, ICountCartProductsCase countCartProductsCase, IDeleteProductFromCartCase deleteProductFromCartCase)
         {
             this.saveProductToCartCase = saveProductToCartCase;
             this.countCartProductsCase = countCartProductsCase;
+            this.deleteProductFromCartCase = deleteProductFromCartCase;
         }
 
         [HttpPost]
@@ -61,6 +63,24 @@ namespace API.Presenters.Controllers
             {
                 int count = countCartProductsCase.Execute(userId);
                 return Ok(count);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        public IActionResult Delete(int id)
+        {
+            int userId = 1; // TODO: Remove for token
+
+            try
+            {
+                deleteProductFromCartCase.Execute(userId, id);
+                return NoContent();
             }
             catch (Exception ex)
             {

@@ -34,6 +34,7 @@ builder.Services.AddTransient<ISearchFavoritesCase, SearchFavoritesCase>();
 builder.Services.AddTransient<ICountFavoritesCase, CountFavoritesCase>();
 builder.Services.AddTransient<ISaveProductToCartCase, SaveProductToCartCase>();
 builder.Services.AddTransient<ICountCartProductsCase, CountCartProductsCase>();
+builder.Services.AddTransient<IDeleteProductFromCartCase, DeleteProductFromCartCase>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

@@ -8,5 +8,6 @@ namespace API.Domain.Repositories
         int Save(CartProduct product);
         int Update(CartProduct product);
         int Count(int userId);
+        int Delete(int userId, int productId);
     }
 }

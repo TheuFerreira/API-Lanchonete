@@ -23,6 +23,15 @@ namespace API.Infra.Repositories
             return count;
         }
 
+        public int Delete(int userId, int productId)
+        {
+            string sql = "DELETE FROM cart_product WHERE id_user = @userId AND id_product = @productId;";
+            object data = new { userId, productId};
+
+            int result = connection.Execute(sql, data);
+            return result;
+        }
+
         public CartProduct? Get(int userId, int productId)
         {
             string sql = "SELECT quantity FROM cart_product WHERE id_user = @userId AND id_product = @productId";
