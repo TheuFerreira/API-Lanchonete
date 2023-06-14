@@ -11,21 +11,21 @@ namespace API.Presenters.Controllers
     [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public class CartProductController : ControllerBase
     {
-        private readonly IAddProductToCartCase addProductToCartCase;
+        private readonly ISaveProductToCartCase saveProductToCartCase;
         private readonly ICountCartProductsCase countCartProductsCase;
 
-        public CartProductController(IAddProductToCartCase addProductToCartCase, ICountCartProductsCase countCartProductsCase)
+        public CartProductController(ISaveProductToCartCase saveProductToCartCase, ICountCartProductsCase countCartProductsCase)
         {
-            this.addProductToCartCase = addProductToCartCase;
+            this.saveProductToCartCase = saveProductToCartCase;
             this.countCartProductsCase = countCartProductsCase;
         }
 
         [HttpPost]
-        [Route("Add")]
+        [Route("Save")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
-        public IActionResult Add(CartAddRequest request)
+        public IActionResult Save(CartAddRequest request)
         {
             int userId = 1; // TODO: Remove for token
 
@@ -33,7 +33,7 @@ namespace API.Presenters.Controllers
             {
                 request.UserId = userId;
 
-                addProductToCartCase.Execute(request);
+                saveProductToCartCase.Execute(request);
                 return Ok();
             }
             catch (BaseInvalidException)

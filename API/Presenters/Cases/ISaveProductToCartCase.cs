@@ -2,7 +2,7 @@
 
 namespace API.Presenters.Cases
 {
-    public interface IAddProductToCartCase
+    public interface ISaveProductToCartCase
     {
         public void Execute(CartAddRequest request);
     }

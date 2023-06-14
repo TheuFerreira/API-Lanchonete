@@ -6,12 +6,12 @@ using API.Presenters.Requests;
 
 namespace API.Domain.Cases
 {
-    public class AddProductToCartCase : IAddProductToCartCase
+    public class SaveProductToCartCase : ISaveProductToCartCase
     {
         private readonly IProductRepository productRepository;
         private readonly ICartProductRepository cartProductRepository;
 
-        public AddProductToCartCase(IProductRepository productRepository, ICartProductRepository cartProductRepository)
+        public SaveProductToCartCase(IProductRepository productRepository, ICartProductRepository cartProductRepository)
         {
             this.productRepository = productRepository;
             this.cartProductRepository = cartProductRepository;

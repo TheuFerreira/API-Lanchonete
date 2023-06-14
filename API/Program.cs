@@ -32,7 +32,7 @@ builder.Services.AddTransient<IGetAllProductsBestSellersByCategoriesCase, GetAll
 builder.Services.AddTransient<IFavoriteProductCase, FavoriteProductCase>();
 builder.Services.AddTransient<ISearchFavoritesCase, SearchFavoritesCase>();
 builder.Services.AddTransient<ICountFavoritesCase, CountFavoritesCase>();
-builder.Services.AddTransient<IAddProductToCartCase, AddProductToCartCase>();
+builder.Services.AddTransient<ISaveProductToCartCase, SaveProductToCartCase>();
 builder.Services.AddTransient<ICountCartProductsCase, CountCartProductsCase>();
 
 builder.Services.AddControllers();
