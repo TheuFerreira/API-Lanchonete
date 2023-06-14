@@ -10,36 +10,44 @@ namespace API.Domain.Cases
     {
         private readonly IProductRepository productRepository;
         private readonly IFileService fileService;
+        private readonly IFavoriteRepository favoriteRepository;
 
-        public SearchFavoritesCase(IProductRepository productRepository, IFileService fileService)
+        public SearchFavoritesCase(IProductRepository productRepository, IFileService fileService, IFavoriteRepository favoriteRepository)
         {
             this.productRepository = productRepository;
             this.fileService = fileService;
+            this.favoriteRepository = favoriteRepository;
         }
 
         public IEnumerable<SearchFavoritesResponse> Execute(int userId, string search)
         {
-            IEnumerable<Product> products = productRepository.GetAllFavorites(userId, search);
+            IEnumerable<int> favorites = favoriteRepository.GetAllFavorites(userId, search);
+            IEnumerable<Product?> products = favorites.Select(productRepository.GetById);
 
-            IEnumerable<SearchFavoritesResponse> response = products.Select((x) =>
+            IList<SearchFavoritesResponse> responses = new List<SearchFavoritesResponse>();
+            foreach (Product? product in products)
             {
-                float rating = productRepository.GetRatingOfProduct(x.ProductId);
+                if (product == null) continue;
 
-                string photoPath = string.Format("{0}//Photos//Products//Covers//{1}", Directory.GetCurrentDirectory(), x.Photo);
+                float rating = productRepository.GetRatingOfProduct(product.ProductId);
+
+                string photoPath = string.Format("{0}//Photos//Products//Covers//{1}", Directory.GetCurrentDirectory(), product.Photo);
                 string photoBase64 = fileService.FileToBase64(photoPath);
 
-                return new SearchFavoritesResponse
+                SearchFavoritesResponse response = new()
                 {
-                    ProductId = x.ProductId,
-                    Title = x.Title,
+                    ProductId = product.ProductId,
+                    Title = product.Title,
                     Rating = rating,
-                    Price = x.Price,
+                    Price = product.Price,
                     Image = photoBase64,
                     Favorite = true,
                 };
-            });
 
-            return response;
+                responses.Add(response);
+            }
+
+            return responses;
         }
     }
 }

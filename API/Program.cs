@@ -21,6 +21,7 @@ builder.Services.AddTransient<ILabelRepository, LabelRepository>();
 builder.Services.AddTransient<ISettingsRepository, SettingsRepository>();
 builder.Services.AddTransient<ICouponRepository, CouponRepository>();
 builder.Services.AddTransient<ISaleProductRepository, SaleProductRepository>();
+builder.Services.AddTransient<IFavoriteRepository, FavoriteRepository>();
 
 builder.Services.AddTransient<IGetProductInfoCase, GetProductInfoCase>();
 builder.Services.AddTransient<IGetAllLabelsCase, GetAllLabelsCase>();

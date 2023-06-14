@@ -12,12 +12,14 @@ namespace API.Domain.Cases
         private readonly ISaleProductRepository saleProductRepository;
         private readonly IProductRepository productRepository;
         private readonly IFileService fileService;
+        private readonly IFavoriteRepository favoriteRepository;
 
-        public GetAllProductsBestSellersByCategoriesCase(ISaleProductRepository saleProductRepository, IProductRepository productRepository, IFileService fileService)
+        public GetAllProductsBestSellersByCategoriesCase(ISaleProductRepository saleProductRepository, IProductRepository productRepository, IFileService fileService, IFavoriteRepository favoriteRepository)
         {
             this.saleProductRepository = saleProductRepository;
             this.productRepository = productRepository;
             this.fileService = fileService;
+            this.favoriteRepository = favoriteRepository;
         }
 
         public IEnumerable<GetAllProductsBestSellersResponse> Execute(IEnumerable<int> categories, string search, int limit, int? userId)
@@ -44,7 +46,7 @@ namespace API.Domain.Cases
 
                 bool favorite = false;
                 if (userId.HasValue)
-                    favorite = productRepository.HasFavorite(x.ProductId, userId.Value);
+                    favorite = favoriteRepository.HasFavorite(x.ProductId, userId.Value);
 
                 string photoPath = string.Format("{0}//Photos//Products//Covers//{1}", Directory.GetCurrentDirectory(), product.Photo);
                 string photoBase64 = fileService.FileToBase64(photoPath);

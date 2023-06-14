@@ -5,16 +5,16 @@ namespace API.Domain.Cases
 {
     public class CountFavoritesCase : ICountFavoritesCase
     {
-        private readonly IProductRepository productRepository;
+        private readonly IFavoriteRepository favoriteRepository;
 
-        public CountFavoritesCase(IProductRepository productRepository)
+        public CountFavoritesCase(IFavoriteRepository favoriteRepository)
         {
-            this.productRepository = productRepository;
+            this.favoriteRepository = favoriteRepository;
         }
 
         public int Execute(int userId)
         {
-            int count = productRepository.CountFavorites(userId);
+            int count = favoriteRepository.CountFavorites(userId);
             return count;
         }
     }

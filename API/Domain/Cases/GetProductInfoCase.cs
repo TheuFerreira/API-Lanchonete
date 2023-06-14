@@ -13,13 +13,15 @@ namespace API.Domain.Cases
         private readonly IFileService fileService;
         private readonly ILabelRepository labelRepository;
         private readonly ISettingsRepository settingsRepository;
+        private readonly IFavoriteRepository favoriteRepository;
 
-        public GetProductInfoCase(IProductRepository productRepository, IFileService fileService, ILabelRepository labelRepository, ISettingsRepository settingsRepository)
+        public GetProductInfoCase(IProductRepository productRepository, IFileService fileService, ILabelRepository labelRepository, ISettingsRepository settingsRepository, IFavoriteRepository favoriteRepository)
         {
             this.productRepository = productRepository;
             this.fileService = fileService;
             this.labelRepository = labelRepository;
             this.settingsRepository = settingsRepository;
+            this.favoriteRepository = favoriteRepository;
         }
 
         public GetProductInfoResponse Execute(int productId, int? userId)
@@ -37,7 +39,7 @@ namespace API.Domain.Cases
 
             bool favorite = false;
             if (userId.HasValue) 
-                favorite = productRepository.HasFavorite(productId, userId.Value);
+                favorite = favoriteRepository.HasFavorite(productId, userId.Value);
 
             return new GetProductInfoResponse
             {

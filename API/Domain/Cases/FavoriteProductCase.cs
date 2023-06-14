@@ -5,23 +5,23 @@ namespace API.Domain.Cases
 {
     public class FavoriteProductCase : IFavoriteProductCase
     {
-        private readonly IProductRepository productRepository;
+        private readonly IFavoriteRepository favoriteRepository;
 
-        public FavoriteProductCase(IProductRepository productRepository)
+        public FavoriteProductCase(IFavoriteRepository favoriteRepository)
         {
-            this.productRepository = productRepository;
+            this.favoriteRepository = favoriteRepository;
         }
 
         public bool Execute(int userId, int productId)
         {
-            bool hasFavorite = productRepository.HasFavorite(productId, userId);
+            bool hasFavorite = favoriteRepository.HasFavorite(productId, userId);
             if (hasFavorite)
             {
-                productRepository.Unfavorite(productId, userId);
+                favoriteRepository.Unfavorite(productId, userId);
             }
             else
             {
-                productRepository.Favorite(productId, userId);
+                favoriteRepository.Favorite(productId, userId);
             }
 
             bool newValue = !hasFavorite;
