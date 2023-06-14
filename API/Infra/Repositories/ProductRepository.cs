@@ -56,6 +56,26 @@ namespace API.Infra.Repositories
             return products;
         }
 
+        public IEnumerable<Product> GetAllFavorites(int userId, string search)
+        {
+            string sql = $@"
+                SELECT p.id_product AS ProductId, photo, title, price 
+                FROM product AS p
+                INNER JOIN product_favorite AS pf ON pf.id_product = p.id_product
+                WHERE p.disabled = 0
+                    AND p.title LIKE '%{search}%'
+                    AND pf.id_user = @userId;
+            ";
+
+            object data = new 
+            {
+                userId
+            };
+
+            IEnumerable<Product> products = connection.Query<Product>(sql, data);
+            return products;
+        }
+
         public Product? GetById(int productId)
         {
             string sql = @"

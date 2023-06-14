@@ -15,18 +15,21 @@ namespace API.Presenters.Controllers
         private readonly IGetAllProductsByCategoriesCase getAllProductsByCategoriesCase;
         private readonly IGetAllProductsBestSellersByCategoriesCase getAllProductsBestSellersByCategoriesCase;
         private readonly IFavoriteProductCase favoriteProductCase;
+        private readonly ISearchFavoritesCase searchFavoritesCase;
 
         public ProductController(
             IGetProductInfoCase getProductInfoCase,
             IGetAllProductsByCategoriesCase getAllProductsByCategoriesCase,
             IGetAllProductsBestSellersByCategoriesCase getAllProductsBestSellersByCategoriesCase,
-            IFavoriteProductCase favoriteProductCase
+            IFavoriteProductCase favoriteProductCase,
+            ISearchFavoritesCase searchFavoritesCase
         )
         {
             this.getProductInfoCase = getProductInfoCase;
             this.getAllProductsByCategoriesCase = getAllProductsByCategoriesCase;
             this.getAllProductsBestSellersByCategoriesCase = getAllProductsBestSellersByCategoriesCase;
             this.favoriteProductCase = favoriteProductCase;
+            this.searchFavoritesCase = searchFavoritesCase;
         }
 
         [HttpGet]
@@ -107,6 +110,27 @@ namespace API.Presenters.Controllers
             {
                 bool newValue = favoriteProductCase.Execute(userId, request.ProductId);
                 return Ok(newValue);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("SearchFavorites")]
+        [ProducesResponseType(typeof(IEnumerable<SearchFavoritesResponse>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult SearchFavorites(SearchFavoritesRequest request)
+        {
+            int userId = 1;
+
+            try
+            {
+                IEnumerable<SearchFavoritesResponse> response = searchFavoritesCase.Execute(userId, request.Search);
+                return Ok(response);
             }
             catch (Exception ex)
             {

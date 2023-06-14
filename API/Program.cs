@@ -28,6 +28,7 @@ builder.Services.AddTransient<IGetAllValidCouponsCase, GetAllValidCouponsCase>()
 builder.Services.AddTransient<IGetAllProductsByCategoriesCase, GetAllProductsByCategoriesCase>();
 builder.Services.AddTransient<IGetAllProductsBestSellersByCategoriesCase, GetAllProductsBestSellersByCategoriesCase>();
 builder.Services.AddTransient<IFavoriteProductCase, FavoriteProductCase>();
+builder.Services.AddTransient<ISearchFavoritesCase, SearchFavoritesCase>();
 
 builder.Services.AddControllers();
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
