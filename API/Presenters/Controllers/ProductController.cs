@@ -16,13 +16,15 @@ namespace API.Presenters.Controllers
         private readonly IGetAllProductsBestSellersByCategoriesCase getAllProductsBestSellersByCategoriesCase;
         private readonly IFavoriteProductCase favoriteProductCase;
         private readonly ISearchFavoritesCase searchFavoritesCase;
+        private readonly ICountFavoritesCase countFavoritesCase;
 
         public ProductController(
             IGetProductInfoCase getProductInfoCase,
             IGetAllProductsByCategoriesCase getAllProductsByCategoriesCase,
             IGetAllProductsBestSellersByCategoriesCase getAllProductsBestSellersByCategoriesCase,
             IFavoriteProductCase favoriteProductCase,
-            ISearchFavoritesCase searchFavoritesCase
+            ISearchFavoritesCase searchFavoritesCase,
+            ICountFavoritesCase countFavoritesCase
         )
         {
             this.getProductInfoCase = getProductInfoCase;
@@ -30,6 +32,7 @@ namespace API.Presenters.Controllers
             this.getAllProductsBestSellersByCategoriesCase = getAllProductsBestSellersByCategoriesCase;
             this.favoriteProductCase = favoriteProductCase;
             this.searchFavoritesCase = searchFavoritesCase;
+            this.countFavoritesCase = countFavoritesCase;
         }
 
         [HttpGet]
@@ -131,6 +134,26 @@ namespace API.Presenters.Controllers
             {
                 IEnumerable<SearchFavoritesResponse> response = searchFavoritesCase.Execute(userId, request.Search);
                 return Ok(response);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("CountFavorites")]
+        [ProducesResponseType(typeof(int), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public IActionResult GetCountFavorites()
+        {
+            int userId = 1;
+
+            try
+            {
+                int count = countFavoritesCase.Execute(userId);
+                return Ok(count);
             }
             catch (Exception ex)
             {

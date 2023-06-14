@@ -14,5 +14,6 @@ namespace API.Domain.Repositories
         bool Favorite(int productId, int userId);
         bool Unfavorite(int productId, int userId);
         IEnumerable<Product> GetAllFavorites(int userId, string search);
+        int CountFavorites(int userId);
     }
 }

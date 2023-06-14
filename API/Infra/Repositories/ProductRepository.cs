@@ -14,6 +14,15 @@ namespace API.Infra.Repositories
             this.connection = connection;
         }
 
+        public int CountFavorites(int userId)
+        {
+            string sql = "SELECT COUNT(id_product) FROM product_favorite WHERE id_user = @userId;";
+            object data = new { userId };
+
+            int count = connection.ExecuteScalar<int>(sql, data);
+            return count;
+        }
+
         public bool Favorite(int productId, int userId)
         {
             string sql = "INSERT INTO product_favorite (id_product, id_user) VALUES (@productId, @userId);";
